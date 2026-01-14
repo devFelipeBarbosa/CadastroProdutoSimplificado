@@ -1,34 +1,15 @@
-@echo off
-echo ============================================
-echo  Inicializando repositorio GIT - BRADIPE
-echo ============================================
+# BRADIPE – Cadastro Simplificado de Produto (Sankhya)
 
-REM === CONFIGURAR USUARIO (ajuste se quiser) ===
-git config user.name "Felipe Barbosa"
-git config user.email "felipe.barbosa@seudominio.com"
+Este repositório contém a customização Java (Gradle) para o **Cadastro Simplificado de Produto**
+no ERP **Sankhya**, permitindo o pré-cadastro de produtos diretamente pelas centrais de venda,
+com posterior validação fiscal.
 
-REM === INICIALIZAR REPOSITORIO ===
+---
+
+## 🧩 Inicialização do Repositório Git
+
+Execute os comandos abaixo **na raiz do projeto**.
+
+### 1️⃣ Inicializar o repositório
+```bash
 git init
-
-REM === CRIAR .gitignore PADRAO PARA JAVA / GRADLE / INTELLIJ ===
-echo # ===== Java / Gradle / IntelliJ ===== > .gitignore
-echo /build/ >> .gitignore
-echo /.gradle/ >> .gitignore
-echo /out/ >> .gitignore
-echo /.idea/ >> .gitignore
-echo *.iml >> .gitignore
-echo *.log >> .gitignore
-echo *.class >> .gitignore
-echo *.jar >> .gitignore
-echo !gradle-wrapper.jar >> .gitignore
-
-REM === ADICIONAR ARQUIVOS ===
-git add .
-
-REM === PRIMEIRO COMMIT ===
-git commit -m "Inicializacao do projeto BRADIPE - Cadastro Simplificado Produto (Sankhya)"
-
-echo ============================================
-echo  Repositorio inicializado com sucesso!
-echo ============================================
-pause
