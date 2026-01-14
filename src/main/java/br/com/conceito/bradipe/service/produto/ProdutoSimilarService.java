@@ -1,67 +1,9 @@
-package br.com.conceito.bradipe;
+package br.com.conceito.bradipe.service.produto;
 
 import br.com.sankhya.extensions.actionbutton.ContextoAcao;
 import br.com.sankhya.extensions.actionbutton.QueryExecutor;
 
-import java.math.BigDecimal;
-
-public class BuscaProdutoSimilar {
-
-    public void buscaItemPorNCM(ContextoAcao res, BigDecimal ncm) throws Exception {
-
-        QueryExecutor query = res.getQuery();
-        query.setParam("CODNCM", ncm);
-        query.nativeSelect("SELECT " +
-                "PRD.CODPROD,PRD.DESCRPROD,PRD.CODGRUPOPROD,PRD.USOPROD,PRD.ORIGPROD,PRD.ICMSGERENCIA,PRD.CODLOCALPADRAO," +
-                "PRD.TEMICMS,PRD.GRUPOICMS,PRD.GRUPOICMS2,PRD.CALCDIFAL,PRD.CLASSUBTRIB,PRD.TIPSUBST,PRD.CODESPECST," +
-                "PRD.TIPGTINNFE,PRD.PRODUTONFE,PRD.GRUPOCSSL,PRD.GRUPOPIS,PRD.GRUPOCOFINS,PRD.GRUPOIBSCBS," +
-                "PRD.CODIPI,PRD.TEMIPICOMPRA,PRD.TEMIPIVENDA,PRD.CODENQIPIENT,PRD.CODENQIPISAI,PRD.CSTIPIENT,PRD.CSTIPISAI," +
-                "PRD.USALOCAL,PRD.CALCULOGIRO,PRD.CALRUPTURAESTOQUE " +
-                "FROM TGFPRO PRD " +
-                "WHERE PRD.NCM = {CODNCM} AND PRD.CODPROD = (SELECT MAX(P.CODPROD) FROM TGFPRO P WHERE P.NCM = {CODNCM})");
-
-        try {
-            while (query.next()) {
-                setCodProd(query.getInt("CODPROD"));
-                setDescrProd(query.getString("DESCRPROD"));
-                setCodGrupo(query.getInt("CODGRUPOPROD"));
-                setUsoProd(query.getString("USOPROD"));
-                setOrigProd(query.getInt("ORIGPROD"));
-                setIcmsGerencia(query.getString("ICMSGERENCIA"));
-                setCodLocalPadrao(query.getInt("CODLOCALPADRAO"));
-                setTemICMS(query.getString("TEMICMS"));
-                setGrupoICMS(query.getInt("GRUPOICMS"));
-                setGrupoICMS2(query.getInt("GRUPOICMS2"));
-                setCalcDifal(query.getString("CALCDIFAL"));
-                setClasSubTrib(query.getInt("CLASSUBTRIB"));
-                setTipSubst(query.getString("TIPSUBST"));
-                setCodEspeCST(query.getInt("CODESPECST"));
-                setTipGtinNfe(query.getInt("TIPGTINNFE"));
-                setProdutoNfe(query.getInt("PRODUTONFE"));
-                setGrupoCSLL(query.getString("GRUPOCSSL"));
-                setGrupoPis(query.getString("GRUPOPIS"));
-                setGrupoCofins(query.getString("GRUPOCOFINS"));
-                setGrupoIbsCbs(query.getInt("GRUPOIBSCBS"));
-                setCodIpi(query.getInt("CODIPI"));
-                setTemIpiCompra(query.getString("TEMIPICOMPRA"));
-                setTemIpiVenda(query.getString("TEMIPIVENDA"));
-                setCodEnqIpiEnt(query.getInt("CODENQIPIENT"));
-                setCodEnqIpSai(query.getInt("CODENQIPISAI"));
-                setCstIpiEnt(query.getInt("CSTIPIENT"));
-                setCstIpiSai(query.getInt("CSTIPISAI"));
-                setUsaLocal(query.getString("USALOCAL"));
-                setCalculoGiro(query.getString("CALCULOGIRO"));
-                setCalRuputuraEstoque(query.getString("CALRUPTURAESTOQUE"));
-            }
-
-
-        } catch (Exception e) {
-            res.mostraErro("Erro ao buscar Item Similar por NCM: \n" + e.getMessage());
-        } finally {
-            query.close();
-        }
-
-    }
+public class ProdutoSimilarService {
 
     private int codProd, codGrupo, origProd, codLocalPadrao, grupoICMS, grupoICMS2, clasSubTrib;
     private int tipGtinNfe, produtoNfe, grupoIbsCbs, codIpi, codEnqIpiEnt, codEnqIpSai, cstIpiEnt, cstIpiSai, codEspeCST;
@@ -306,6 +248,67 @@ public class BuscaProdutoSimilar {
 
     public void setCalRuputuraEstoque(String calRuputuraEstoque) {
         this.calRuputuraEstoque = calRuputuraEstoque;
+    }
+
+    public void buscaPorNCM(ContextoAcao res, String ncm) throws Exception {
+
+        if (ncm == null) {
+            res.mostraErro("NCM não informado para buscar produto similar.");
+            return;
+        }
+
+        QueryExecutor query = res.getQuery();
+        query.setParam("CODNCM", ncm);
+        query.nativeSelect("SELECT " +
+                "PRD.CODPROD,PRD.DESCRPROD,PRD.CODGRUPOPROD,PRD.USOPROD,PRD.ORIGPROD,PRD.ICMSGERENCIA,PRD.CODLOCALPADRAO," +
+                "PRD.TEMICMS,PRD.GRUPOICMS,PRD.GRUPOICMS2,PRD.CALCDIFAL,PRD.CLASSUBTRIB,PRD.TIPSUBST,PRD.CODESPECST," +
+                "PRD.TIPGTINNFE,PRD.PRODUTONFE,PRD.GRUPOCSSL,PRD.GRUPOPIS,PRD.GRUPOCOFINS,PRD.GRUPOIBSCBS," +
+                "PRD.CODIPI,PRD.TEMIPICOMPRA,PRD.TEMIPIVENDA,PRD.CODENQIPIENT,PRD.CODENQIPISAI,PRD.CSTIPIENT,PRD.CSTIPISAI," +
+                "PRD.USALOCAL,PRD.CALCULOGIRO,PRD.CALRUPTURAESTOQUE " +
+                "FROM TGFPRO PRD " +
+                "WHERE PRD.NCM = {CODNCM} AND PRD.CODPROD = (SELECT MAX(P.CODPROD) FROM TGFPRO P WHERE P.NCM = {CODNCM})");
+
+        try {
+            while (query.next()) {
+                setCodProd(query.getInt("CODPROD"));
+                setDescrProd(query.getString("DESCRPROD"));
+                setCodGrupo(query.getInt("CODGRUPOPROD"));
+                setUsoProd(query.getString("USOPROD"));
+                setOrigProd(query.getInt("ORIGPROD"));
+                setIcmsGerencia(query.getString("ICMSGERENCIA"));
+                setCodLocalPadrao(query.getInt("CODLOCALPADRAO"));
+                setTemICMS(query.getString("TEMICMS"));
+                setGrupoICMS(query.getInt("GRUPOICMS"));
+                setGrupoICMS2(query.getInt("GRUPOICMS2"));
+                setCalcDifal(query.getString("CALCDIFAL"));
+                setClasSubTrib(query.getInt("CLASSUBTRIB"));
+                setTipSubst(query.getString("TIPSUBST"));
+                setCodEspeCST(query.getInt("CODESPECST"));
+                setTipGtinNfe(query.getInt("TIPGTINNFE"));
+                setProdutoNfe(query.getInt("PRODUTONFE"));
+                setGrupoCSLL(query.getString("GRUPOCSSL"));
+                setGrupoPis(query.getString("GRUPOPIS"));
+                setGrupoCofins(query.getString("GRUPOCOFINS"));
+                setGrupoIbsCbs(query.getInt("GRUPOIBSCBS"));
+                setCodIpi(query.getInt("CODIPI"));
+                setTemIpiCompra(query.getString("TEMIPICOMPRA"));
+                setTemIpiVenda(query.getString("TEMIPIVENDA"));
+                setCodEnqIpiEnt(query.getInt("CODENQIPIENT"));
+                setCodEnqIpSai(query.getInt("CODENQIPISAI"));
+                setCstIpiEnt(query.getInt("CSTIPIENT"));
+                setCstIpiSai(query.getInt("CSTIPISAI"));
+                setUsaLocal(query.getString("USALOCAL"));
+                setCalculoGiro(query.getString("CALCULOGIRO"));
+                setCalRuputuraEstoque(query.getString("CALRUPTURAESTOQUE"));
+            }
+
+
+        } catch (Exception e) {
+            res.mostraErro("Erro ao buscar Item Similar por NCM: \n" + e.getMessage());
+        } finally {
+            query.close();
+        }
+
     }
 
 }
