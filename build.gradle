@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group = 'br.com.conceito.bradipe'
+version = '1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // ✅ JAR local do Sankhya (está em /libs)
+    implementation files('libs/SankhyaW-extensions.jar')
+
+    // Testes (opcional)
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
