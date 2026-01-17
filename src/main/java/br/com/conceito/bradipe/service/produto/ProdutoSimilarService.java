@@ -3,6 +3,8 @@ package br.com.conceito.bradipe.service.produto;
 import br.com.sankhya.extensions.actionbutton.ContextoAcao;
 import br.com.sankhya.extensions.actionbutton.QueryExecutor;
 
+import java.math.BigDecimal;
+
 public class ProdutoSimilarService {
 
     private int codProd, codGrupo, origProd, codLocalPadrao, grupoICMS, grupoICMS2, clasSubTrib;
@@ -250,26 +252,48 @@ public class ProdutoSimilarService {
         this.calRuputuraEstoque = calRuputuraEstoque;
     }
 
-    public void buscaPorNCM(ContextoAcao res, String ncm) throws Exception {
+    public void buscaPorNCM(ContextoAcao res, String ncm, BigDecimal produto) throws Exception {
 
-        if (ncm == null) {
-            res.mostraErro("NCM não informado para buscar produto similar.");
+        String ncmNorm = (ncm == null) ? null : ncm.trim();
+        if (ncmNorm != null && ncmNorm.isEmpty()) ncmNorm = null;
+
+        BigDecimal prodNorm = (produto != null && produto.signum() > 0) ? produto : null;
+
+        if (ncmNorm == null && prodNorm == null) {
+            res.mostraErro("Informe o NCM ou o Código do Produto para buscar produto similar.");
             return;
         }
 
         QueryExecutor query = res.getQuery();
-        query.setParam("CODNCM", ncm);
-        query.nativeSelect("SELECT " +
-                "PRD.CODPROD,PRD.DESCRPROD,PRD.CODGRUPOPROD,PRD.USOPROD,PRD.ORIGPROD,PRD.ICMSGERENCIA,PRD.CODLOCALPADRAO," +
-                "PRD.TEMICMS,PRD.GRUPOICMS,PRD.GRUPOICMS2,PRD.CALCDIFAL,PRD.CLASSUBTRIB,PRD.TIPSUBST,PRD.CODESPECST," +
-                "PRD.TIPGTINNFE,PRD.PRODUTONFE,PRD.GRUPOCSSL,PRD.GRUPOPIS,PRD.GRUPOCOFINS,PRD.GRUPOIBSCBS," +
-                "PRD.CODIPI,PRD.TEMIPICOMPRA,PRD.TEMIPIVENDA,PRD.CODENQIPIENT,PRD.CODENQIPISAI,PRD.CSTIPIENT,PRD.CSTIPISAI," +
-                "PRD.USALOCAL,PRD.CALCULOGIRO,PRD.CALRUPTURAESTOQUE " +
-                "FROM TGFPRO PRD " +
-                "WHERE PRD.NCM = {CODNCM} AND PRD.CODPROD = (SELECT MAX(P.CODPROD) FROM TGFPRO P WHERE P.NCM = {CODNCM})");
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT ")
+                .append("PRD.CODPROD,PRD.DESCRPROD,PRD.CODGRUPOPROD,PRD.USOPROD,PRD.ORIGPROD,PRD.ICMSGERENCIA,PRD.CODLOCALPADRAO,")
+                .append("PRD.TEMICMS,PRD.GRUPOICMS,PRD.GRUPOICMS2,PRD.CALCDIFAL,PRD.CLASSUBTRIB,PRD.TIPSUBST,PRD.CODESPECST,")
+                .append("PRD.TIPGTINNFE,PRD.PRODUTONFE,PRD.GRUPOCSSL,PRD.GRUPOPIS,PRD.GRUPOCOFINS,PRD.GRUPOIBSCBS,")
+                .append("PRD.CODIPI,PRD.TEMIPICOMPRA,PRD.TEMIPIVENDA,PRD.CODENQIPIENT,PRD.CODENQIPISAI,PRD.CSTIPIENT,PRD.CSTIPISAI,")
+                .append("PRD.USALOCAL,PRD.CALCULOGIRO,PRD.CALRUPTURAESTOQUE ")
+                .append("FROM TGFPRO PRD ")
+                .append("WHERE ");
+
+        // Prioridade: CODPROD; senão, NCM
+        if (prodNorm != null) {
+            query.setParam("CODPROD", prodNorm);
+            sql.append("PRD.CODPROD = {CODPROD}");
+        } else {
+            query.setParam("CODNCM", ncmNorm);
+            sql.append("PRD.NCM = {CODNCM} ")
+                    .append("AND PRD.CODPROD = (SELECT MAX(P.CODPROD) FROM TGFPRO P WHERE P.NCM = {CODNCM})");
+        }
+
+        query.nativeSelect(sql.toString());
 
         try {
+            boolean achou = false;
+
             while (query.next()) {
+                achou = true;
+
                 setCodProd(query.getInt("CODPROD"));
                 setDescrProd(query.getString("DESCRPROD"));
                 setCodGrupo(query.getInt("CODGRUPOPROD"));
@@ -302,13 +326,15 @@ public class ProdutoSimilarService {
                 setCalRuputuraEstoque(query.getString("CALRUPTURAESTOQUE"));
             }
 
+            if (!achou) {
+                res.mostraErro("Nenhum produto similar encontrado com os parâmetros informados.");
+            }
 
         } catch (Exception e) {
-            res.mostraErro("Erro ao buscar Item Similar por NCM: \n" + e.getMessage());
+            res.mostraErro("Erro ao buscar Item Similar (NCM/Cód. Produto): \n" + e.getMessage());
         } finally {
             query.close();
         }
-
     }
 
 }

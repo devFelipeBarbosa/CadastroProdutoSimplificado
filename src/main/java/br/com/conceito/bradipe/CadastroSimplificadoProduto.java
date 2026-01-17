@@ -20,6 +20,7 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava{
         BigDecimal referencia = ParamUtil.getBigDecimalOpcional(ctx, "REFERENCIA");
         String refForn = ParamUtil.getStringOpcional(ctx, "REFFORN");
         String codNcm = ParamUtil.getStringOpcional(ctx, "NCM");
+        BigDecimal codProd = ParamUtil.getBigDecimalOpcional(ctx, "CODPROD");
         String similarNCM = ParamUtil.getStringOpcional(ctx, "SIMILARNCM");
         String obsCadastro = ParamUtil.getStringOpcional(ctx, "OBSERVACOESCADASTRO");
 
@@ -32,13 +33,31 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava{
             return;
         }
 
-        if ("S".equalsIgnoreCase(similarNCM) && (codNcm == null)) {
-            ctx.mostraErro("Para busca de Produtos Similares é obrigatório preencher o NCM!");
-            return;
-        } else if ("S".equalsIgnoreCase(similarNCM) && codNcm.trim().length() == 8) {
+        if ("S".equalsIgnoreCase(similarNCM)) {
+            if (codNcm == null && codProd == null) {
+                ctx.mostraErro("Para busca de Produtos Similares, informe o NCM ou o Código do Produto.");
+                return;
+            }
+
+            if (codNcm != null) {
+                if (codNcm.length() != 8) {
+                    ctx.mostraErro("NCM inválido. Informe 8 dígitos.");
+                    return;
+                }
+            }
+
+            if (codProd != null && codProd.signum() <= 0) {
+                ctx.mostraErro("Código do Produto inválido.");
+                return;
+            }
+
             ProdutoSimilarService serviceSimilar = new ProdutoSimilarService();
-            serviceSimilar.buscaPorNCM(ctx, codNcm.trim());
+            serviceSimilar.buscaPorNCM(ctx, codNcm, codProd);
+            ctx.mostraErro("Produto Similar: " + serviceSimilar.getCodProd() + "; PIS: " + serviceSimilar.getGrupoPis());
         }
+
+
+
 
     }
 }
