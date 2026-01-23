@@ -7,10 +7,26 @@ import java.math.BigDecimal;
 
 public class ProdutoSimilarService {
 
-    private int codProd, codGrupo, origProd, codLocalPadrao, grupoICMS, grupoICMS2, clasSubTrib;
+    private int codProd, codGrupo, codLocalPadrao, grupoICMS, grupoICMS2, clasSubTrib;
     private int tipGtinNfe, produtoNfe, grupoIbsCbs, codIpi, codEnqIpiEnt, codEnqIpSai, cstIpiEnt, cstIpiSai, codEspeCST;
-    private String descrProd, usoProd, icmsGerencia, temICMS, calcDifal, tipSubst, grupoCSLL, grupoPis;
+    private String descrProd, codigoNcm, origProd, usoProd, icmsGerencia, temICMS, calcDifal, tipSubst, grupoCSLL, grupoPis;
     private String grupoCofins, temIpiCompra, temIpiVenda, usaLocal, calculoGiro, calRuputuraEstoque;
+
+    public String getCodigoNcm() {
+        return codigoNcm;
+    }
+
+    public String getOrigProd() {
+        return origProd;
+    }
+
+    public void setOrigProd(String origProd) {
+        this.origProd = origProd;
+    }
+
+    public void setCodigoNcm(String codigoNcm) {
+        this.codigoNcm = codigoNcm;
+    }
 
     public int getCodEnqIpSai() {
         return codEnqIpSai;
@@ -50,14 +66,6 @@ public class ProdutoSimilarService {
 
     public void setCodGrupo(int codGrupo) {
         this.codGrupo = codGrupo;
-    }
-
-    public int getOrigProd() {
-        return origProd;
-    }
-
-    public void setOrigProd(int origProd) {
-        this.origProd = origProd;
     }
 
     public int getCodLocalPadrao() {
@@ -252,7 +260,7 @@ public class ProdutoSimilarService {
         this.calRuputuraEstoque = calRuputuraEstoque;
     }
 
-    public void buscaPorNCM(ContextoAcao res, String ncm, BigDecimal produto) throws Exception {
+    public void buscaPorNCMProduto(ContextoAcao res, String ncm, BigDecimal produto) throws Exception {
 
         String ncmNorm = (ncm == null) ? null : ncm.trim();
         if (ncmNorm != null && ncmNorm.isEmpty()) ncmNorm = null;
@@ -268,7 +276,7 @@ public class ProdutoSimilarService {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ")
-                .append("PRD.CODPROD,PRD.DESCRPROD,PRD.CODGRUPOPROD,PRD.USOPROD,PRD.ORIGPROD,PRD.ICMSGERENCIA,PRD.CODLOCALPADRAO,")
+                .append("PRD.CODPROD,PRD.DESCRPROD,PRD.NCM,PRD.CODGRUPOPROD,PRD.USOPROD,PRD.ORIGPROD,PRD.ICMSGERENCIA,PRD.CODLOCALPADRAO,")
                 .append("PRD.TEMICMS,PRD.GRUPOICMS,PRD.GRUPOICMS2,PRD.CALCDIFAL,PRD.CLASSUBTRIB,PRD.TIPSUBST,PRD.CODESPECST,")
                 .append("PRD.TIPGTINNFE,PRD.PRODUTONFE,PRD.GRUPOCSSL,PRD.GRUPOPIS,PRD.GRUPOCOFINS,PRD.GRUPOIBSCBS,")
                 .append("PRD.CODIPI,PRD.TEMIPICOMPRA,PRD.TEMIPIVENDA,PRD.CODENQIPIENT,PRD.CODENQIPISAI,PRD.CSTIPIENT,PRD.CSTIPISAI,")
@@ -296,9 +304,10 @@ public class ProdutoSimilarService {
 
                 setCodProd(query.getInt("CODPROD"));
                 setDescrProd(query.getString("DESCRPROD"));
+                setCodigoNcm(query.getString("NCM"));
                 setCodGrupo(query.getInt("CODGRUPOPROD"));
                 setUsoProd(query.getString("USOPROD"));
-                setOrigProd(query.getInt("ORIGPROD"));
+                setOrigProd(query.getString("ORIGPROD"));
                 setIcmsGerencia(query.getString("ICMSGERENCIA"));
                 setCodLocalPadrao(query.getInt("CODLOCALPADRAO"));
                 setTemICMS(query.getString("TEMICMS"));
