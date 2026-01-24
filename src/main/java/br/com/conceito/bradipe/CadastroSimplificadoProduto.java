@@ -106,8 +106,8 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
                                 "Produto: " + p.getCodProd() + " - " + safe(p.getDescrProd()) + "\n" +
                                 "Solicitante: " + safe(solicitante != null ? solicitante.getNome() : "") +
                                 (emailSolicitante != null ? " (" + emailSolicitante + ")" : "") + "\n" +
-                                "NCM: " + safe(codNcm) + "\n" +
-                                "Grupo: " + (codGrupoProd != null ? codGrupoProd.toPlainString() : "") + "\n" +
+                                "Cód. NCM: " + safe(codNcm) + "\n" +
+                                "Cód. Grupo Prd.: " + (codGrupoProd != null ? codGrupoProd.toPlainString() : "") + "\n" +
                                 "Unidade: " + safe(codVol) + "\n\n" +
                                 "Ação necessária: revisar o cadastro e liberar para faturamento conforme política interna.\n\n" +
                                 "Mensagem automática - não responder.";
