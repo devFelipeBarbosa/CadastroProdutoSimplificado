@@ -16,8 +16,8 @@ repositories {
 }
 
 dependencies {
-    // ✅ JAR local do Sankhya (está em /libs)
-    implementation files('libs/SankhyaW-extensions.jar')
+    // ✅ Sankhya: usar compileOnly (não empacota no jar final)
+    compileOnly files('libs/SankhyaW-extensions.jar')
 
     // Testes (opcional)
     testImplementation platform('org.junit:junit-bom:5.10.0')
@@ -28,3 +28,39 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+/* ===================== JAR 1: Actions ===================== */
+tasks.register('jarActions', Jar) {
+    archiveBaseName = 'CadastroSimplificadoProduto-action'
+    archiveVersion = version
+
+    from(sourceSets.main.output)
+
+    include('br/com/conceito/bradipe/actions/**')
+    include('br/com/conceito/bradipe/service/**')
+    include('br/com/conceito/bradipe/util/**')
+}
+
+/* ===================== JAR 2: Rules ===================== */
+tasks.register('jarRules', Jar) {
+    archiveBaseName = 'BloqueioPreCadastro-rule'
+    archiveVersion = version
+
+    from(sourceSets.main.output)
+
+    include('br/com/conceito/bradipe/rules/**')
+    include('br/com/conceito/bradipe/service/**')
+    include('br/com/conceito/bradipe/util/**')
+}
+
+/* ✅ build gera os dois jars */
+tasks.named('build') {
+    dependsOn('jarActions', 'jarRules')
+}
+
+/* (Opcional) para não gerar o jar padrão */
+tasks.named('jar') {
+    enabled = false
+}
+
+

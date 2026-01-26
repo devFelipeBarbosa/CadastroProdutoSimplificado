@@ -1,4 +1,4 @@
-package br.com.conceito.bradipe;
+package br.com.conceito.bradipe.actions;
 
 import br.com.conceito.bradipe.service.registro.CriarProdutoService;
 import br.com.conceito.bradipe.util.ParamUtil;
