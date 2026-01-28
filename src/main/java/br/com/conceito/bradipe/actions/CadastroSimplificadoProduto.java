@@ -115,12 +115,12 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
                 ctx.eMail(assunto, corpo, destinatarios);
 
             } else {
-                mensagemRetorno += "\n\n⚠️ Aviso: não foi possível enviar e-mail (sem destinatários válidos).";
+                mensagemRetorno += "\n\nAviso: não foi possível enviar e-mail (sem destinatários válidos).";
             }
 
         } catch (Exception e) {
             // não derruba o cadastro por causa do e-mail
-            mensagemRetorno += "\n\n⚠️ Aviso: produto criado, mas houve falha no envio do e-mail.\n" +
+            mensagemRetorno += "\n\nAviso: produto criado, mas houve falha no envio do e-mail.\n" +
                     "Motivo: " + e.getMessage();
         }
 

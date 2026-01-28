@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    // ✅ Sankhya: usar compileOnly (não empacota no jar final)
+    // Sankhya: usar compileOnly (não empacota no jar final)
     compileOnly files('libs/SankhyaW-extensions.jar')
 
     // Testes (opcional)
@@ -31,7 +31,7 @@ test {
 
 /* ===================== JAR 1: Actions ===================== */
 tasks.register('jarActions', Jar) {
-    archiveBaseName = 'CadastroSimplificadoProduto-action'
+    archiveBaseName = 'CadastroSimplificadoProduto'
     archiveVersion = version
 
     from(sourceSets.main.output)
@@ -43,7 +43,7 @@ tasks.register('jarActions', Jar) {
 
 /* ===================== JAR 2: Rules ===================== */
 tasks.register('jarRules', Jar) {
-    archiveBaseName = 'BloqueioPreCadastro-rule'
+    archiveBaseName = 'BloqueioPreCadastro'
     archiveVersion = version
 
     from(sourceSets.main.output)
