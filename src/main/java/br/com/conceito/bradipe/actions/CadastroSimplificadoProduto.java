@@ -28,6 +28,8 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
         String refForn = ParamUtil.getStringOpcional(ctx, "REFFORN");
         String codNcm = ParamUtil.getStringOpcional(ctx, "NCM");
         BigDecimal codProd = ParamUtil.getBigDecimalOpcional(ctx, "CODPROD");
+        String marca = ParamUtil.getStringOpcional(ctx, "MARCA");
+        String fabricante = ParamUtil.getStringOpcional(ctx, "FABRICANTE");
 
         String similar = ParamUtil.getStringOpcional(ctx, "SIMILAR");
         similar = (similar == null || similar.trim().isEmpty()) ? "N" : similar;
@@ -75,7 +77,7 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
         CriarProdutoService prd = new CriarProdutoService();
         CriarProdutoService.ResultadoCriacao p = prd.CriarProduto(
                 ctx, descrProd, codVol, codGrupoProd, referencia, refForn, codNcm,
-                codProd, similar, importado, obsCadastro
+                codProd, marca, fabricante, similar, importado, obsCadastro
         );
 
 

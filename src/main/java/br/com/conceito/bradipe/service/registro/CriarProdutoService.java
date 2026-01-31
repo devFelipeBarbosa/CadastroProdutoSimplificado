@@ -49,6 +49,8 @@ public class CriarProdutoService {
                                          String refForn,
                                          String codNcm,
                                          BigDecimal codProd,
+                                         String marca,
+                                         String fabricante,
                                          String similar,
                                          String imp,
                                          String obs) throws Exception {
@@ -116,7 +118,9 @@ public class CriarProdutoService {
         novoItem.setCampo("DESCRPROD", descrProd);
         novoItem.setCampo("CODVOL", codVol);
         novoItem.setCampo("REFERENCIA", referencia);
-        novoItem.setCampo("REFFORN", refForn);
+        novoItem.setCampo("MARCA", marca.toUpperCase());
+        novoItem.setCampo("FABRICANTE", fabricante.toUpperCase());
+        novoItem.setCampo("REFFORN", refForn.toUpperCase());
         novoItem.setCampo("AD_OBSPRECADASTRO", obs);                            // variavel add TGFPRO, Texto (Caixa de Texto)
         novoItem.setCampo("AD_CADLIBERADO", 'N');                         // variavel add TGFPRO, Texto (CheckBox)
         novoItem.setCampo("AD_DTSOLICITACADASTRO", new java.util.Date());       // variavel add TGFPRO, Data
