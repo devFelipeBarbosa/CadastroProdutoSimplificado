@@ -16,6 +16,8 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
     private static final Pattern EMAIL_RX =
             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
+    private static final Pattern REGRAPARTYNUMBER = Pattern.compile("^[A-Za-z0-9]+$");
+
     @Override
     public void doAction(ContextoAcao ctx) throws Exception {
 
@@ -30,6 +32,10 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
         BigDecimal codProd = ParamUtil.getBigDecimalOpcional(ctx, "CODPROD");
         String marca = ParamUtil.getStringOpcional(ctx, "MARCA");
         String fabricante = ParamUtil.getStringOpcional(ctx, "FABRICANTE");
+
+        if (!fabricante.isEmpty() && !REGRAPARTYNUMBER.matcher(fabricante).matches()) {
+            ctx.mostraErro("Não é permitido caracteres especiais ou espaços, o Código Fabricante informado é inválido: " + fabricante + ".");
+        }
 
         String similar = ParamUtil.getStringOpcional(ctx, "SIMILAR");
         similar = (similar == null || similar.trim().isEmpty()) ? "N" : similar;
