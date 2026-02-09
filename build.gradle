@@ -16,10 +16,8 @@ repositories {
 }
 
 dependencies {
-    // Sankhya: usar compileOnly (não empacota no jar final)
     compileOnly files('libs/SankhyaW-extensions.jar')
 
-    // Testes (opcional)
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -29,9 +27,9 @@ test {
     useJUnitPlatform()
 }
 
-/* ===================== JAR 1: Actions ===================== */
-tasks.register('jarActions', Jar) {
-    archiveBaseName = 'CadastroSimplificaDoProduto'
+/* ===================== JAR 1: CadastroSimplificadoDeProduto ===================== */
+tasks.register('jarCadastroSimplificado', Jar) {
+    archiveBaseName = 'CadastroSimplificadoDeProduto'
     archiveVersion = version
 
     from(sourceSets.main.output)
@@ -41,7 +39,19 @@ tasks.register('jarActions', Jar) {
     include('br/com/conceito/bradipe/util/**')
 }
 
-/* ===================== JAR 2: Rules ===================== */
+/* ===================== JAR 2: CopiarProdutoSimilar ===================== */
+tasks.register('jarCopiarProdutoSimilar', Jar) {
+    archiveBaseName = 'CopiarProdutoSimilar'
+    archiveVersion = version
+
+    from(sourceSets.main.output)
+
+    include('br/com/conceito/bradipe/actions/**')
+    include('br/com/conceito/bradipe/service/**')
+    include('br/com/conceito/bradipe/util/**')
+}
+
+/* ===================== JAR 3: Rules ===================== */
 tasks.register('jarRules', Jar) {
     archiveBaseName = 'BloqueioPreCadastro'
     archiveVersion = version
@@ -53,14 +63,12 @@ tasks.register('jarRules', Jar) {
     include('br/com/conceito/bradipe/util/**')
 }
 
-/* ✅ build gera os dois jars */
+/* build gera os três jars */
 tasks.named('build') {
-    dependsOn('jarActions', 'jarRules')
+    dependsOn('jarCadastroSimplificado', 'jarCopiarProdutoSimilar', 'jarRules')
 }
 
-/* (Opcional) para não gerar o jar padrão */
+/* desabilita o jar padrão */
 tasks.named('jar') {
     enabled = false
 }
-
-

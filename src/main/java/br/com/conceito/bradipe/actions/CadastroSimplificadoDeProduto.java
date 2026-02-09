@@ -6,14 +6,13 @@ import br.com.conceito.bradipe.util.ParamUtil;
 import br.com.conceito.bradipe.util.UsuarioUtil;
 import br.com.sankhya.extensions.actionbutton.AcaoRotinaJava;
 import br.com.sankhya.extensions.actionbutton.ContextoAcao;
-import br.com.sankhya.extensions.actionbutton.QueryExecutor;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class CadastroSimplificaDoProduto implements AcaoRotinaJava {
+public class CadastroSimplificadoDeProduto implements AcaoRotinaJava {
 
     private static final Pattern EMAIL_RX =
             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
