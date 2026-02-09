@@ -346,4 +346,26 @@ public class ProdutoSimilarService {
         }
     }
 
+    public void validarFabricanteJaCadastrado(ContextoAcao ctx, String fabricante) throws Exception {
+        QueryExecutor q = ctx.getQuery();
+        q.setParam("FAB", fabricante.toUpperCase());
+
+        q.nativeSelect(
+                "SELECT CODPROD, DESCRPROD " +
+                        "  FROM TGFPRO " +
+                        " WHERE UPPER(FABRICANTE) = {FAB} " +
+                        "   AND ROWNUM = 1"
+        );
+
+        if (q.next()) {
+            int codProdExistente = q.getInt("CODPROD");
+            String descrExistente = q.getString("DESCRPROD");
+
+            ctx.mostraErro(
+                    "Já existe produto cadastrado com este Código de Fabricante (" + fabricante.toUpperCase() + ").\n" +
+                            "Produto existente: " + codProdExistente + " - " + descrExistente + "\n\n" +
+                            "Revise o cadastro antes de solicitar novo pré-cadastro."
+            );
+        }
+    }
 }

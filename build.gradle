@@ -31,7 +31,7 @@ test {
 
 /* ===================== JAR 1: Actions ===================== */
 tasks.register('jarActions', Jar) {
-    archiveBaseName = 'CadastroSimplificadoProduto'
+    archiveBaseName = 'CadastroSimplificaDoProduto'
     archiveVersion = version
 
     from(sourceSets.main.output)

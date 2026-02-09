@@ -1,17 +1,19 @@
 package br.com.conceito.bradipe.actions;
 
+import br.com.conceito.bradipe.service.produto.ProdutoSimilarService;
 import br.com.conceito.bradipe.service.registro.CriarProdutoService;
 import br.com.conceito.bradipe.util.ParamUtil;
 import br.com.conceito.bradipe.util.UsuarioUtil;
 import br.com.sankhya.extensions.actionbutton.AcaoRotinaJava;
 import br.com.sankhya.extensions.actionbutton.ContextoAcao;
+import br.com.sankhya.extensions.actionbutton.QueryExecutor;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class CadastroSimplificadoProduto implements AcaoRotinaJava {
+public class CadastroSimplificaDoProduto implements AcaoRotinaJava {
 
     private static final Pattern EMAIL_RX =
             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
@@ -33,8 +35,17 @@ public class CadastroSimplificadoProduto implements AcaoRotinaJava {
         String marca = ParamUtil.getStringOpcional(ctx, "MARCA");
         String fabricante = ParamUtil.getStringOpcional(ctx, "FABRICANTE");
 
-        if (!fabricante.isEmpty() && !REGRAPARTYNUMBER.matcher(fabricante).matches()) {
-            ctx.mostraErro("Não é permitido caracteres especiais ou espaços, o Código Fabricante informado é inválido: " + fabricante + ".");
+        if (fabricante != null && !fabricante.trim().isEmpty()) {
+            fabricante = fabricante.trim();
+
+            if (!REGRAPARTYNUMBER.matcher(fabricante).matches()) {
+                ctx.mostraErro("Não é permitido caracteres especiais ou espaços, o Código Fabricante informado é inválido: "
+                        + fabricante + ".");
+                return;
+            }
+
+            ProdutoSimilarService fab = new ProdutoSimilarService();
+            fab.validarFabricanteJaCadastrado(ctx, fabricante);
         }
 
         String similar = ParamUtil.getStringOpcional(ctx, "SIMILAR");
