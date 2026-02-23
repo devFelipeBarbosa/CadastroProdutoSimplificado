@@ -59,7 +59,7 @@ public class CriarProdutoService {
         Registro novoItem = ctx.novaLinha("TGFPRO");
         ProdutoSimilarService ps = new ProdutoSimilarService();
 
-        if (similar.equals("S")) {
+        if ("S".equalsIgnoreCase(similar)) {
             ps.buscaPorNCMProduto(ctx, codNcm, codProd);
             novoItem.setCampo("AD_CODPRODSIMILAR", ps.getCodProd());               // variavel add TGFPRO, Inteiro (Padrão)
             novoItem.setCampo("AD_DESCRSIMILAR", ps.getDescrProd());               // variavel add TGFPRO, Texto (Padrão)
@@ -97,19 +97,19 @@ public class CriarProdutoService {
             novoItem.setCampo("USOPROD", 'R');
             novoItem.setCampo("USALOCAL", 'S');
 
-            if (imp.equals("S")) {
+            if ("S".equalsIgnoreCase(imp)) {
                 novoItem.setCampo("ORIGPROD", '2');
             }
         }
 
         //Campos Obrigatórios
-        if (similar.equals("S") && codGrupoProd == null) {
+        if ("S".equalsIgnoreCase(similar) && codGrupoProd == null) {
             novoItem.setCampo("CODGRUPOPROD", ps.getCodGrupo());
         } else {
             novoItem.setCampo("CODGRUPOPROD", codGrupoProd);
         }
 
-        if(similar.equals("S") && codNcm == null) {
+        if("S".equalsIgnoreCase(similar) && codNcm == null) {
             novoItem.setCampo("NCM", ps.getCodigoNcm());
         } else {
             novoItem.setCampo("NCM", codNcm);
@@ -118,9 +118,19 @@ public class CriarProdutoService {
         novoItem.setCampo("DESCRPROD", descrProd);
         novoItem.setCampo("CODVOL", codVol);
         novoItem.setCampo("REFERENCIA", referencia);
-        novoItem.setCampo("MARCA", marca.toUpperCase());
-        novoItem.setCampo("FABRICANTE", fabricante.toUpperCase());
-        novoItem.setCampo("REFFORN", refForn.toUpperCase());
+
+        if (marca != null && !marca.trim().isEmpty()) {
+            novoItem.setCampo("MARCA", marca.trim().toUpperCase());
+        }
+
+        if (fabricante != null && !fabricante.trim().isEmpty()) {
+            novoItem.setCampo("FABRICANTE", fabricante.trim().toUpperCase());
+        }
+
+        if (refForn != null && !refForn.trim().isEmpty()) {
+            novoItem.setCampo("REFFORN", refForn.trim().toUpperCase());
+        }
+
         novoItem.setCampo("AD_OBSPRECADASTRO", obs);                            // variavel add TGFPRO, Texto (Caixa de Texto)
         novoItem.setCampo("AD_CADLIBERADO", 'N');                         // variavel add TGFPRO, Texto (CheckBox)
         novoItem.setCampo("AD_DTSOLICITACADASTRO", new java.util.Date());       // variavel add TGFPRO, Data
