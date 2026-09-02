@@ -11,6 +11,7 @@ public class ProdutoSimilarService {
     private int tipGtinNfe, produtoNfe, grupoIbsCbs, codIpi, codEnqIpiEnt, codEnqIpSai, cstIpiEnt, cstIpiSai, codEspeCST;
     private String descrProd, codigoNcm, origProd, usoProd, icmsGerencia, temICMS, calcDifal, tipSubst, grupoCSLL, grupoPis;
     private String grupoCofins, temIpiCompra, temIpiVenda, usaLocal, calculoGiro, calRuputuraEstoque;
+    private String apuraProdepe, indEspProdepe;
 
     public String getCodigoNcm() {
         return codigoNcm;
@@ -260,6 +261,22 @@ public class ProdutoSimilarService {
         this.calRuputuraEstoque = calRuputuraEstoque;
     }
 
+    public String getApuraProdepe() {
+        return apuraProdepe;
+    }
+
+    public void setApuraProdepe(String apuraProdepe) {
+        this.apuraProdepe = apuraProdepe;
+    }
+
+    public String getIndEspProdepe() {
+        return indEspProdepe;
+    }
+
+    public void setIndEspProdepe(String indEspProdepe) {
+        this.indEspProdepe = indEspProdepe;
+    }
+
     public void buscaPorNCMProduto(ContextoAcao res, String ncm, BigDecimal produto) throws Exception {
 
         String ncmNorm = (ncm == null) ? null : ncm.trim();
@@ -280,7 +297,8 @@ public class ProdutoSimilarService {
                 .append("PRD.TEMICMS,PRD.GRUPOICMS,PRD.GRUPOICMS2,PRD.CALCDIFAL,PRD.CLASSUBTRIB,PRD.TIPSUBST,PRD.CODESPECST,")
                 .append("PRD.TIPGTINNFE,PRD.PRODUTONFE,PRD.GRUPOCSSL,PRD.GRUPOPIS,PRD.GRUPOCOFINS,PRD.GRUPOIBSCBS,")
                 .append("PRD.CODIPI,PRD.TEMIPICOMPRA,PRD.TEMIPIVENDA,PRD.CODENQIPIENT,PRD.CODENQIPISAI,PRD.CSTIPIENT,PRD.CSTIPISAI,")
-                .append("PRD.USALOCAL,PRD.CALCULOGIRO,PRD.CALRUPTURAESTOQUE ")
+                .append("PRD.USALOCAL,PRD.CALCULOGIRO,PRD.CALRUPTURAESTOQUE,")
+                .append("PRD.APURAPRODEPE,PRD.INDESPPRODEPE ")
                 .append("FROM TGFPRO PRD ")
                 .append("WHERE ");
 
@@ -333,6 +351,8 @@ public class ProdutoSimilarService {
                 setUsaLocal(query.getString("USALOCAL"));
                 setCalculoGiro(query.getString("CALCULOGIRO"));
                 setCalRuputuraEstoque(query.getString("CALRUPTURAESTOQUE"));
+                setApuraProdepe(query.getString("APURAPRODEPE"));
+                setIndEspProdepe(query.getString("INDESPPRODEPE"));
             }
 
             if (!achou) {

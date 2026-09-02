@@ -90,6 +90,8 @@ public class CriarProdutoService {
             novoItem.setCampo("USALOCAL", ps.getUsaLocal());
             novoItem.setCampo("CALCULOGIRO", ps.getCalculoGiro());
             novoItem.setCampo("CALRUPTURAESTOQUE", ps.getCalRuputuraEstoque());
+            novoItem.setCampo("APURAPRODEPE", ps.getApuraProdepe());
+            novoItem.setCampo("INDESPPRODEPE", ps.getIndEspProdepe());
 
         } else {
             novoItem.setCampo("CSTIPIENT", 49);
