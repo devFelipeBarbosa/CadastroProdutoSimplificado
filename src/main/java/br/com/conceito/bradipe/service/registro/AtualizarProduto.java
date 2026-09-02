@@ -53,6 +53,9 @@ public class AtualizarProduto {
             q.setParam("CALCULOGIRO", similar.getCalculoGiro());
             q.setParam("CALRUPTURAESTOQUE", similar.getCalRuputuraEstoque());
 
+            q.setParam("APURAPRODEPE", similar.getApuraProdepe());
+            q.setParam("INDESPPRODEPE", similar.getIndEspProdepe());
+
             q.update(
                     "UPDATE TGFPRO SET " +
                             " NCM = {NCM}, " +
@@ -83,7 +86,9 @@ public class AtualizarProduto {
                             " CSTIPISAI = {CSTIPISAI}, " +
                             " USALOCAL = {USALOCAL}, " +
                             " CALCULOGIRO = {CALCULOGIRO}, " +
-                            " CALRUPTURAESTOQUE = {CALRUPTURAESTOQUE} " +
+                            " CALRUPTURAESTOQUE = {CALRUPTURAESTOQUE}, " +
+                            " APURAPRODEPE = {APURAPRODEPE}, " +
+                            " INDESPPRODEPE = {INDESPPRODEPE} " +
                             "WHERE CODPROD = {CODPROD}"
             );
 
